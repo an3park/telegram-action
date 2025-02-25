@@ -1,0 +1,32 @@
+name: Test Action
+
+on:
+  push:
+
+jobs:
+  success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run success
+        run: exit 0
+      - name: Telegram Notification
+        uses: ./
+        if: always()
+        with:
+          bot_token: ${{ secrets.BOT_TOKEN }}
+          chat_id: ${{ secrets.CHAT_ID }}
+          message: 'Test message'
+  fail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run success
+        run: exit 1
+      - name: Telegram Notification
+        uses: ./
+        if: always()
+        with:
+          bot_token: ${{ secrets.BOT_TOKEN }}
+          chat_id: ${{ secrets.CHAT_ID }}
+          message: 'Test message'
