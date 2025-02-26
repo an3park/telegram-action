@@ -7024,7 +7024,7 @@ try {
   channels$3.error = { hasSubscribers: false };
 }
 
-class Request$3 {
+class Request$4 {
   constructor (origin, {
     path,
     method,
@@ -7325,14 +7325,14 @@ class Request$3 {
   static [kHTTP1BuildRequest$1] (origin, opts, handler) {
     // TODO: Migrate header parsing here, to make Requests
     // HTTP agnostic
-    return new Request$3(origin, opts, handler)
+    return new Request$4(origin, opts, handler)
   }
 
   static [kHTTP2BuildRequest$1] (origin, opts, handler) {
     const headers = opts.headers;
     opts = { ...opts, headers: null };
 
-    const request = new Request$3(origin, opts, handler);
+    const request = new Request$4(origin, opts, handler);
 
     request.headers = {};
 
@@ -7470,7 +7470,7 @@ function processHeader (request, key, val, skipAppend = false) {
   }
 }
 
-var request$4 = Request$3;
+var request$5 = Request$4;
 
 class Dispatcher extends EE {
   dispatch () {
@@ -8733,8 +8733,8 @@ class Client extends dispatcherBase {
     const origin = opts.origin || this[kUrl$3].origin;
 
     const request = this[kHTTPConnVersion] === 'h2'
-      ? request$4[kHTTP2BuildRequest](origin, opts, handler)
-      : request$4[kHTTP1BuildRequest](origin, opts, handler);
+      ? request$5[kHTTP2BuildRequest](origin, opts, handler)
+      : request$5[kHTTP1BuildRequest](origin, opts, handler);
 
     this[kQueue$1].push(request);
     if (this[kResuming]) ; else if (util$6.bodyLength(request.body) == null && util$6.isIterable(request.body)) {
@@ -10018,7 +10018,7 @@ function writeH2 (client, session, request) {
   const { body, method, path, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
 
   let headers;
-  if (typeof reqHeaders === 'string') headers = request$4[kHTTP2CopyHeaders](reqHeaders.trim());
+  if (typeof reqHeaders === 'string') headers = request$5[kHTTP2CopyHeaders](reqHeaders.trim());
   else headers = reqHeaders;
 
   if (upgrade) {
@@ -12046,10 +12046,10 @@ class RequestHandler extends AsyncResource$4 {
   }
 }
 
-function request$3 (opts, callback) {
+function request$4 (opts, callback) {
   if (callback === undefined) {
     return new Promise((resolve, reject) => {
-      request$3.call(this, opts, (err, data) => {
+      request$4.call(this, opts, (err, data) => {
         return err ? reject(err) : resolve(data)
       });
     })
@@ -12066,7 +12066,7 @@ function request$3 (opts, callback) {
   }
 }
 
-var apiRequest = request$3;
+var apiRequest = request$4;
 var RequestHandler_1 = RequestHandler;
 apiRequest.RequestHandler = RequestHandler_1;
 
@@ -12744,14 +12744,14 @@ function connect$1 (opts, callback) {
 
 var apiConnect = connect$1;
 
-var request$2 = apiRequest;
+var request$3 = apiRequest;
 var stream = apiStream;
 var pipeline$1 = apiPipeline;
 var upgrade = apiUpgrade;
 var connect = apiConnect;
 
 var api = {
-	request: request$2,
+	request: request$3,
 	stream: stream,
 	pipeline: pipeline$1,
 	upgrade: upgrade,
@@ -15487,7 +15487,7 @@ const requestFinalizer = new FinalizationRegistry(({ signal, abort }) => {
 });
 
 // https://fetch.spec.whatwg.org/#request-class
-class Request$2 {
+class Request$3 {
   // https://fetch.spec.whatwg.org/#dom-request
   constructor (input, init = {}) {
     if (input === kConstruct$2) {
@@ -15550,7 +15550,7 @@ class Request$2 {
       // 6. Otherwise:
 
       // 7. Assert: input is a Request object.
-      assert(input instanceof Request$2);
+      assert(input instanceof Request$3);
 
       // 8. Set request to input’s request.
       request = input[kState$5];
@@ -15890,7 +15890,7 @@ class Request$2 {
 
     // 33. Let inputBody be input’s request’s body if input is a Request
     // object; otherwise null.
-    const inputBody = input instanceof Request$2 ? input[kState$5].body : null;
+    const inputBody = input instanceof Request$3 ? input[kState$5].body : null;
 
     // 34. If either init["body"] exists and is non-null or inputBody is
     // non-null, and request’s method is `GET` or `HEAD`, then throw a
@@ -15982,7 +15982,7 @@ class Request$2 {
 
   // Returns request’s HTTP method, which is "GET" by default.
   get method () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The method getter steps are to return this’s request’s method.
     return this[kState$5].method
@@ -15990,7 +15990,7 @@ class Request$2 {
 
   // Returns the URL of request as a string.
   get url () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The url getter steps are to return this’s request’s URL, serialized.
     return URLSerializer$2(this[kState$5].url)
@@ -16000,7 +16000,7 @@ class Request$2 {
   // Note that headers added in the network layer by the user agent will not
   // be accounted for in this object, e.g., the "Host" header.
   get headers () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The headers getter steps are to return this’s headers.
     return this[kHeaders$2]
@@ -16009,7 +16009,7 @@ class Request$2 {
   // Returns the kind of resource requested by request, e.g., "document"
   // or "script".
   get destination () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The destination getter are to return this’s request’s destination.
     return this[kState$5].destination
@@ -16021,7 +16021,7 @@ class Request$2 {
   // during fetching to determine the value of the `Referer` header of the
   // request being made.
   get referrer () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // 1. If this’s request’s referrer is "no-referrer", then return the
     // empty string.
@@ -16043,7 +16043,7 @@ class Request$2 {
   // This is used during fetching to compute the value of the request’s
   // referrer.
   get referrerPolicy () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The referrerPolicy getter steps are to return this’s request’s referrer policy.
     return this[kState$5].referrerPolicy
@@ -16053,7 +16053,7 @@ class Request$2 {
   // whether the request will use CORS, or will be restricted to same-origin
   // URLs.
   get mode () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The mode getter steps are to return this’s request’s mode.
     return this[kState$5].mode
@@ -16071,7 +16071,7 @@ class Request$2 {
   // which is a string indicating how the request will
   // interact with the browser’s cache when fetching.
   get cache () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The cache getter steps are to return this’s request’s cache mode.
     return this[kState$5].cache
@@ -16082,7 +16082,7 @@ class Request$2 {
   // request will be handled during fetching. A request
   // will follow redirects by default.
   get redirect () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The redirect getter steps are to return this’s request’s redirect mode.
     return this[kState$5].redirect
@@ -16092,7 +16092,7 @@ class Request$2 {
   // cryptographic hash of the resource being fetched. Its value
   // consists of multiple hashes separated by whitespace. [SRI]
   get integrity () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The integrity getter steps are to return this’s request’s integrity
     // metadata.
@@ -16102,7 +16102,7 @@ class Request$2 {
   // Returns a boolean indicating whether or not request can outlive the
   // global in which it was created.
   get keepalive () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The keepalive getter steps are to return this’s request’s keepalive.
     return this[kState$5].keepalive
@@ -16111,7 +16111,7 @@ class Request$2 {
   // Returns a boolean indicating whether or not request is for a reload
   // navigation.
   get isReloadNavigation () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The isReloadNavigation getter steps are to return true if this’s
     // request’s reload-navigation flag is set; otherwise false.
@@ -16121,7 +16121,7 @@ class Request$2 {
   // Returns a boolean indicating whether or not request is for a history
   // navigation (a.k.a. back-foward navigation).
   get isHistoryNavigation () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The isHistoryNavigation getter steps are to return true if this’s request’s
     // history-navigation flag is set; otherwise false.
@@ -16132,33 +16132,33 @@ class Request$2 {
   // object indicating whether or not request has been aborted, and its
   // abort event handler.
   get signal () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // The signal getter steps are to return this’s signal.
     return this[kSignal]
   }
 
   get body () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     return this[kState$5].body ? this[kState$5].body.stream : null
   }
 
   get bodyUsed () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     return !!this[kState$5].body && util$6.isDisturbed(this[kState$5].body.stream)
   }
 
   get duplex () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     return 'half'
   }
 
   // Returns a clone of request.
   clone () {
-    webidl$8.brandCheck(this, Request$2);
+    webidl$8.brandCheck(this, Request$3);
 
     // 1. If this is unusable, then throw a TypeError.
     if (this.bodyUsed || this.body?.locked) {
@@ -16170,7 +16170,7 @@ class Request$2 {
 
     // 3. Let clonedRequestObject be the result of creating a Request object,
     // given clonedRequest, this’s headers’s guard, and this’s relevant Realm.
-    const clonedRequestObject = new Request$2(kConstruct$2);
+    const clonedRequestObject = new Request$3(kConstruct$2);
     clonedRequestObject[kState$5] = clonedRequest;
     clonedRequestObject[kRealm$2] = this[kRealm$2];
     clonedRequestObject[kHeaders$2] = new Headers$3(kConstruct$2);
@@ -16197,7 +16197,7 @@ class Request$2 {
   }
 }
 
-mixinBody(Request$2);
+mixinBody(Request$3);
 
 function makeRequest$2 (init) {
   // https://fetch.spec.whatwg.org/#requests
@@ -16263,7 +16263,7 @@ function cloneRequest (request) {
   return newRequest
 }
 
-Object.defineProperties(Request$2.prototype, {
+Object.defineProperties(Request$3.prototype, {
   method: kEnumerableProperty$5,
   url: kEnumerableProperty$5,
   headers: kEnumerableProperty$5,
@@ -16291,7 +16291,7 @@ Object.defineProperties(Request$2.prototype, {
 });
 
 webidl$8.converters.Request = webidl$8.interfaceConverter(
-  Request$2
+  Request$3
 );
 
 // https://fetch.spec.whatwg.org/#requestinfo
@@ -16300,7 +16300,7 @@ webidl$8.converters.RequestInfo = function (V) {
     return webidl$8.converters.USVString(V)
   }
 
-  if (V instanceof Request$2) {
+  if (V instanceof Request$3) {
     return webidl$8.converters.Request(V)
   }
 
@@ -16389,7 +16389,7 @@ webidl$8.converters.RequestInit = webidl$8.dictionaryConverter([
   }
 ]);
 
-var request$1 = { Request: Request$2, makeRequest: makeRequest$2 };
+var request$2 = { Request: Request$3, makeRequest: makeRequest$2 };
 
 const {
   Response: Response$1,
@@ -16399,7 +16399,7 @@ const {
   makeResponse
 } = response$1;
 const { Headers: Headers$2 } = headers;
-const { Request: Request$1, makeRequest: makeRequest$1 } = request$1;
+const { Request: Request$2, makeRequest: makeRequest$1 } = request$2;
 
 const {
   bytesMatch,
@@ -16523,7 +16523,7 @@ function fetch$1 (input, init = {}) {
   let requestObject;
 
   try {
-    requestObject = new Request$1(input, init);
+    requestObject = new Request$2(input, init);
   } catch (e) {
     p.reject(e);
     return p.promise
@@ -19604,7 +19604,7 @@ const { kEnumerableProperty: kEnumerableProperty$3, isDisturbed } = util$6;
 const { kHeadersList: kHeadersList$2 } = symbols$4;
 const { webidl: webidl$4 } = webidl_1;
 const { Response, cloneResponse } = response$1;
-const { Request } = request$1;
+const { Request: Request$1 } = request$2;
 const { kState, kHeaders, kGuard, kRealm } = symbols$3;
 const { fetching: fetching$1 } = fetch_1;
 const { urlIsHttpHttpsScheme, createDeferredPromise, readAllBytes } = util$5;
@@ -19667,7 +19667,7 @@ class Cache$1 {
 
     // 2.
     if (request !== undefined) {
-      if (request instanceof Request) {
+      if (request instanceof Request$1) {
         // 2.1.1
         r = request[kState];
 
@@ -19677,7 +19677,7 @@ class Cache$1 {
         }
       } else if (typeof request === 'string') {
         // 2.2.1
-        r = new Request(request)[kState];
+        r = new Request$1(request)[kState];
       }
     }
 
@@ -19777,7 +19777,7 @@ class Cache$1 {
     // 5.
     for (const request of requests) {
       // 5.1
-      const r = new Request(request)[kState];
+      const r = new Request$1(request)[kState];
 
       // 5.2
       if (!urlIsHttpHttpsScheme(r.url)) {
@@ -19912,10 +19912,10 @@ class Cache$1 {
     let innerRequest = null;
 
     // 2.
-    if (request instanceof Request) {
+    if (request instanceof Request$1) {
       innerRequest = request[kState];
     } else { // 3.
-      innerRequest = new Request(request)[kState];
+      innerRequest = new Request$1(request)[kState];
     }
 
     // 4.
@@ -20042,7 +20042,7 @@ class Cache$1 {
      */
     let r = null;
 
-    if (request instanceof Request) {
+    if (request instanceof Request$1) {
       r = request[kState];
 
       if (r.method !== 'GET' && !options.ignoreMethod) {
@@ -20051,7 +20051,7 @@ class Cache$1 {
     } else {
       assert(typeof request === 'string');
 
-      r = new Request(request)[kState];
+      r = new Request$1(request)[kState];
     }
 
     /** @type {CacheBatchOperation[]} */
@@ -20106,7 +20106,7 @@ class Cache$1 {
     // 2.
     if (request !== undefined) {
       // 2.1
-      if (request instanceof Request) {
+      if (request instanceof Request$1) {
         // 2.1.1
         r = request[kState];
 
@@ -20115,7 +20115,7 @@ class Cache$1 {
           return []
         }
       } else if (typeof request === 'string') { // 2.2
-        r = new Request(request)[kState];
+        r = new Request$1(request)[kState];
       }
     }
 
@@ -20151,7 +20151,7 @@ class Cache$1 {
 
       // 5.4.2
       for (const request of requests) {
-        const requestObject = new Request('https://a');
+        const requestObject = new Request$1('https://a');
         requestObject[kState] = request;
         requestObject[kHeaders][kHeadersList$2] = request.headersList;
         requestObject[kHeaders][kGuard] = 'immutable';
@@ -21948,7 +21948,7 @@ const {
 } = symbols;
 const { fireEvent: fireEvent$1, failWebsocketConnection: failWebsocketConnection$2 } = util;
 const { CloseEvent } = events;
-const { makeRequest } = request$1;
+const { makeRequest } = request$2;
 const { fetching } = fetch_1;
 const { Headers } = headers;
 const { getGlobalDispatcher: getGlobalDispatcher$1 } = global$1;
@@ -23399,7 +23399,7 @@ if (util$6.nodeMajor > 16 || (util$6.nodeMajor === 16 && util$6.nodeMinor >= 8))
   };
   module.exports.Headers = headers.Headers;
   module.exports.Response = response$1.Response;
-  module.exports.Request = request$1.Request;
+  module.exports.Request = request$2.Request;
   module.exports.FormData = formdata.FormData;
   module.exports.File = file.File;
   module.exports.FileReader = filereader.FileReader;
@@ -27216,7 +27216,7 @@ function withDefaults$1(oldEndpoint, newDefaults) {
   });
 }
 
-const request = withDefaults$1(endpoint, {
+const request$1 = withDefaults$1(endpoint, {
   headers: {
     "user-agent": `octokit-request.js/${VERSION$4} ${getUserAgent()}`
   }
@@ -27322,7 +27322,7 @@ function withDefaults(request2, newDefaults) {
 }
 
 // pkg/dist-src/index.js
-withDefaults(request, {
+withDefaults(request$1, {
   headers: {
     "user-agent": `octokit-graphql.js/${VERSION$3} ${getUserAgent()}`
   },
@@ -27442,7 +27442,7 @@ var Octokit = class {
   constructor(options = {}) {
     const hook = new Collection();
     const requestDefaults = {
-      baseUrl: request.endpoint.DEFAULTS.baseUrl,
+      baseUrl: request$1.endpoint.DEFAULTS.baseUrl,
       headers: {},
       request: Object.assign({}, options.request, {
         // @ts-ignore internal usage only, no need to type
@@ -27463,7 +27463,7 @@ var Octokit = class {
     if (options.timeZone) {
       requestDefaults.headers["time-zone"] = options.timeZone;
     }
-    this.request = request.defaults(requestDefaults);
+    this.request = request$1.defaults(requestDefaults);
     this.graphql = withCustomRequest(this.request).defaults(requestDefaults);
     this.log = Object.assign(
       {
@@ -30133,6 +30133,7 @@ var _github$context$paylo;
 function tgMd(text) {
   return text.replace(/([|{\[\]*_~}+)(#>!=\-.])/gm, '\\$1');
 }
+const jobStatus = core.getInput('job_status');
 const botToken = core.getInput('bot_token', {
   required: true
 });
@@ -30144,9 +30145,10 @@ const message = core.getInput('message', {
 });
 const messageThreadId = core.getInput('message_thread_id');
 const parseMode = core.getInput('parse_mode');
+const disableWebPagePreview = core.getBooleanInput('disable_web_page_preview');
+const disableNotification = core.getBooleanInput('disable_notification');
 const githubUrl = github.context.serverUrl;
 const ref = github.context.ref;
-const job = github.context.job;
 const {
   repo,
   owner
@@ -30155,16 +30157,19 @@ const runId = github.context.runId;
 const headCommitId = github.context.sha;
 const commitMessage = ((_github$context$paylo = github.context.payload.head_commit) == null ? void 0 : _github$context$paylo.message) || '';
 let text = '';
-if (job === 'success') {
-  text += '✅ Success';
-} else if (job === 'cancelled') {
-  text += '🗑️ Cancelled';
-} else if (job === 'fail') {
-  text += '❌ Failed';
-} else {
-  text += job;
+if (jobStatus) {
+  if (jobStatus.toLowerCase() === 'success') {
+    text += '✅ Success';
+  } else if (jobStatus.toLowerCase() === 'cancelled') {
+    text += '🗑️ Cancelled';
+  } else if (jobStatus.toLowerCase() === 'failure' || jobStatus.toLowerCase() === 'failed') {
+    text += '❌ Failed';
+  } else {
+    text += jobStatus;
+  }
+  text += '\n\n';
 }
-text += `\n`;
+text += `${message}\n\n`;
 if (parseMode === 'HTML') {
   text += `repository: <a href="${githubUrl}/${owner}/${repo}">${owner}/${repo}</a>\n`;
 } else if (parseMode === 'MarkdownV2') {
@@ -30172,29 +30177,31 @@ if (parseMode === 'HTML') {
 }
 text += `ref: ${ref}\n`;
 if (parseMode === 'HTML') {
-  text += `log: <a href="${githubUrl}/${owner}/${repo}/actions/runs/${runId}">log</a>\n`;
+  text += `<a href="${githubUrl}/${owner}/${repo}/actions/runs/${runId}">log</a>\n`;
 } else if (parseMode === 'MarkdownV2') {
-  text += `log: [log](${tgMd(githubUrl)}/${tgMd(owner)}/${tgMd(repo)}/actions/runs/${runId})\n`;
+  text += `[log](${tgMd(githubUrl)}/${tgMd(owner)}/${tgMd(repo)}/actions/runs/${runId})\n`;
 }
 if (parseMode === 'HTML') {
   text += `commit: <a href="${githubUrl}/${owner}/${repo}/commit/${headCommitId}">${commitMessage}</a>\n`;
 } else if (parseMode === 'MarkdownV2') {
   text += `commit: [${tgMd(commitMessage)}](${tgMd(githubUrl)}/${tgMd(owner)}/${tgMd(repo)}/commit/${tgMd(headCommitId)})\n`;
 }
-text += `\n${message}`;
-const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+const requestBody = JSON.stringify({
+  chat_id: chatId,
+  text,
+  message_thread_id: messageThreadId,
+  parse_mode: parseMode,
+  disable_web_page_preview: disableWebPagePreview,
+  disable_notification: disableNotification
+});
+const request = new Request(`https://api.telegram.org/bot${botToken}/sendMessage`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({
-    chat_id: chatId,
-    text,
-    message_thread_id: messageThreadId,
-    parse_mode: parseMode,
-    disable_web_page_preview: true
-  })
+  body: requestBody
 });
+const response = await fetch(request);
 if (!response.ok) {
-  core.error(`Failed to send message: ${response.statusText} | ${await response.text()}`);
+  core.error(`Failed to send message: ${response.statusText} | response: ${await response.text()} | request: ${requestBody}`);
 }

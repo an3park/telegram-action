@@ -4,20 +4,7 @@ on:
   push:
 
 jobs:
-  success:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run success
-        run: exit 0
-      - name: Telegram Notification
-        uses: ./
-        if: always()
-        with:
-          bot_token: ${{ secrets.BOT_TOKEN }}
-          chat_id: ${{ secrets.CHAT_ID }}
-          message: 'Test message'
-  fail:
+  mdv2fail:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,4 +16,21 @@ jobs:
         with:
           bot_token: ${{ secrets.BOT_TOKEN }}
           chat_id: ${{ secrets.CHAT_ID }}
-          message: 'Test message'
+          message: '*bold* _italic_ ~strikethrough~ [link](https://github.com)'
+          disable_web_page_preview: true
+          disable_notification: true
+  html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run success
+        run: exit 0
+      - name: HTML Notification
+        if: always()
+        uses: ./
+        with:
+          bot_token: ${{ secrets.BOT_TOKEN }}
+          chat_id: ${{ secrets.CHAT_ID }}
+          parse_mode: HTML
+          message: |
+            <a href="https://example.com">start</a>

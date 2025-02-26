@@ -1,23 +1,31 @@
 name: 'Telegram Notification Action'
-description: 'Telegram Notification Action'
+description: 'Telegram send message action'
 author: 'an3park'
 inputs:
+  job_status:
+    description: 'Job status, default: job.status'
+    default: ${{ job.status }}
+  # https://core.telegram.org/bots/api#sendmessage
   bot_token:
-    required: true
     description: 'Bot token'
-  chat_id:
     required: true
+  chat_id:
     description: 'Unique identifier for the target chat or username of the target channel (in the format @channelusername)'
+    required: true
   message_thread_id:
-    required: false
     description: 'Unique identifier for the target message thread (topic) of the forum; for forum supergroups only'
   message:
-    required: true
     description: 'Text of the message to be sent, 1-4096 characters after entities parsing'
+    required: true
   parse_mode:
+    description: 'MarkdownV2 | HTML | Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api#formatting-options)'
     default: 'MarkdownV2'
-    required: false
-    description: 'Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api#formatting-options)'
+  disable_web_page_preview:
+    description: 'Disables link previews for links in the message'
+    default: 'false'
+  disable_notification:
+    description: 'Sends the message silently. Users will receive a notification with no sound.'
+    default: 'false'
 
 runs:
   using: 'node20'
